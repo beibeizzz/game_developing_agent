@@ -1,0 +1,103 @@
+{
+  "project_id": "dodge-001",
+  "spec_rev": 1,
+  "title": "陨石躲避",
+  "genre": "single_player_dodge",
+  "engine_family": "Phaser 4",
+  "engine_version": "<RESOLVE_AND_LOCK_DURING_DEVELOPMENT>",
+  "viewport": {
+    "width": 800,
+    "height": 600,
+    "units": "logical_pixels"
+  },
+  "round": {
+    "duration_ms": 60000,
+    "initial_hp": 3,
+    "collision_damage": 1,
+    "invulnerability_ms": 800,
+    "default_difficulty": "normal",
+    "default_seed": 42,
+    "restart_reuses_seed": true,
+    "pause_freezes_game_time": true
+  },
+  "player": {
+    "radius_px": 14,
+    "speed_px_s": 280,
+    "start_x": 400,
+    "start_y": 500
+  },
+  "controls": {
+    "move": [
+      "ArrowUp",
+      "ArrowDown",
+      "ArrowLeft",
+      "ArrowRight",
+      "W",
+      "A",
+      "S",
+      "D"
+    ],
+    "start": [
+      "Enter",
+      "start_button"
+    ],
+    "pause_resume": [
+      "P",
+      "pause_button"
+    ],
+    "restart": [
+      "R",
+      "restart_button"
+    ]
+  },
+  "level_factory": {
+    "rngVersion": "<DEFINE_AND_LOCK_RNG_V1>",
+    "generatorVersion": "dodge-waves-v1",
+    "seeds": [
+      17,
+      42,
+      2026
+    ],
+    "max_alive_obstacles": 12,
+    "obstacle_radius_px_range": [
+      14,
+      24
+    ],
+    "safety_gap_px": 60,
+    "minimum_reaction_ms": 500,
+    "difficulty_params": {
+      "easy": {
+        "spawn_interval_ms": 900,
+        "speed_px_s_range": [
+          120,
+          180
+        ]
+      },
+      "normal": {
+        "spawn_interval_ms": 700,
+        "speed_px_s_range": [
+          180,
+          240
+        ]
+      },
+      "hard": {
+        "spawn_interval_ms": 500,
+        "speed_px_s_range": [
+          220,
+          300
+        ]
+      }
+    }
+  },
+  "assets": {
+    "style": "清晰的俯视角科幻插画，角色与障碍轮廓分明，背景低对比",
+    "static_minimum": [
+      "player",
+      "obstacle",
+      "background"
+    ],
+    "animated_clip_target": "player_idle_or_thruster",
+    "ui_text_rendering": "engine_text"
+  },
+  "validation_profile": "development"
+}
