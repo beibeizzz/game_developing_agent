@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "game_developing_agent": {
-      "type": "stdio",
-      "command": "bash",
-      "args": ["./scripts/run.sh", "game_developing_agent-mcp"]
-    }
-  }
-}

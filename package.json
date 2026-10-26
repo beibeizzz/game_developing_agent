@@ -1,0 +1,45 @@
+{
+  "name": "game_developing_agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "start": "tsx src/server.ts",
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "test": "tsx --test tests/*.test.ts",
+    "test:browser": "playwright test",
+    "coder:build": "docker build -f Dockerfile.coder -t game-developing-agent-coder:local .",
+    "package:source": "node scripts/package-source.mjs",
+    "format": "prettier --write \"src/**/*.ts\" \"ui/**/*.{tsx,css,html}\" \"templates/game/*.{mjs,html,css,json}\" \"tests/**/*.ts\" \"scripts/*.mjs\" \"*.{ts,json}\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"ui/**/*.{tsx,css,html}\" \"templates/game/*.{mjs,html,css,json}\" \"tests/**/*.ts\" \"scripts/*.mjs\" \"*.{ts,json}\""
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "0.3.310",
+    "@langchain/langgraph": "1.5.2",
+    "@langchain/langgraph-checkpoint-sqlite": "1.1.0",
+    "better-sqlite3": "12.11.1",
+    "cheerio": "1.2.0",
+    "fflate": "0.8.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "sharp": "0.35.5",
+    "undici": "8.12.3",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/better-sqlite3": "9.6.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "prettier": "3.9.10",
+    "tsx": "^4.0.0",
+    "typescript": "^5.0.0",
+    "vite": "8.3.5"
+  },
+  "license": "Apache-2.0",
+  "description": "Local game development workbench with agent workflows, review and evaluation"
+}

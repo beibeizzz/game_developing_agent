@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+  <meta charset="utf-8" /><title>关卡蓝图</title
+  ><link rel="stylesheet" href="shell.css" />
+  <main>
+    <a href="index.html">← 返回游戏</a>
+    <h1>确定性关卡蓝图</h1>
+    <p>与游戏运行使用同一生成器和参数。</p>
+    <label>Seed <input id="seed" type="number" value="1024" /></label
+    ><select id="difficulty">
+      <option value="easy">轻松</option>
+      <option value="normal" selected>标准</option>
+      <option value="hard">挑战</option></select
+    ><button id="run">生成</button><canvas id="map" width="960" height="600"></canvas>
+    <pre id="report"></pre>
+  </main>
+  <script type="module">
+    import { generateLevel, validateLevel } from './level.mjs';
+    const config = await fetch('game-config.json').then((r) => r.json());
+    const $ = (id) => document.getElementById(id);
+    function draw() {
+      const level = generateLevel({
+        ...(config.level || {}),
+        seed: +$('seed').value,
+        difficulty: $('difficulty').value,
+        width: config.width || 960,
+        height: config.height || 600,
+      });
+      window.__blueprint = level;
+      const c = $('map'),
+        ctx = c.getContext('2d');
+      ctx.fillStyle = '#0b1428';
+      ctx.fillRect(0, 0, c.width, c.height);
+      for (const w of level.waves) {
+        ctx.fillStyle = '#65bfe6';
+        ctx.beginPath();
+        ctx.arc(
+          (w.x / level.width) * c.width,
+          (w.at / level.duration) * c.height,
+          Math.max(2, w.radius * 0.4),
+          0,
+          Math.PI * 2,
+        );
+        ctx.fill();
+      }
+      ctx.fillStyle = 'white';
+      ctx.font = '14px system-ui';
+      ctx.fillText('横轴：生成位置 / 纵轴：出现时间', 16, 24);
+      $('report').textContent = JSON.stringify(
+        {
+          seed: level.seed,
+          difficulty: level.difficulty,
+          waves: level.waves.length,
+          duration: level.duration,
+          validation: validateLevel(level, config.level || {}),
+        },
+        null,
+        2,
+      );
+    }
+    $('run').onclick = draw;
+    draw();
+  </script>
+</html>

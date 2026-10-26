@@ -1,0 +1,110 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #e7eef9;
+  background: #080e1c;
+  color-scheme: dark;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 22px;
+}
+header,
+footer,
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+h1 {
+  margin: 4px 0 20px;
+  font-size: 26px;
+}
+small {
+  color: #81a4c7;
+  letter-spacing: 0.15em;
+}
+a {
+  color: #8ad4ff;
+}
+.toolbar {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 14px;
+}
+button,
+select,
+input {
+  font: inherit;
+  color: inherit;
+  background: #18253e;
+  border: 1px solid #314463;
+  border-radius: 8px;
+  padding: 9px 12px;
+}
+button {
+  cursor: pointer;
+}
+button:hover {
+  background: #274267;
+}
+input {
+  width: 110px;
+}
+button:first-of-type {
+  background: #135f87;
+}
+.stage {
+  position: relative;
+  border: 1px solid #314463;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #070d1a;
+}
+canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  outline: none;
+}
+#status {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 15px;
+  background: #101b30db;
+  border-radius: 20px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+footer {
+  padding-top: 14px;
+  color: #91a8c3;
+  font-size: 13px;
+}
+#error {
+  color: #ffaba5;
+}
+.touch {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 16px;
+}
+.touch button {
+  touch-action: none;
+  min-width: 60px;
+}
+@media (min-width: 900px) {
+  .touch {
+    display: none;
+  }
+}

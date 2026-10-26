@@ -1,85 +1,80 @@
 # game_developing_agent
 
-game_developing_agent 是用于创建和迭代 Phaser 浏览器游戏的本地命令行工具。自然语言任务通过 Claude Code 分派给专业角色，stdio MCP 执行素材处理、构建和验证。项目保存检查点、试玩记录、迭代提案及可显式激活的经验。
+本地游戏开发工作台。通过专业 Agent 协作，将创意推进到方案审核、素材制作、代码生成、游戏试玩和迭代测评。
 
-当前版本：**0.1.0rc1**。支持 Linux 与 Windows WSL2；游戏通过本地 HTTP 服务运行。
+当前为开发版：TypeScript、LangGraph、SQLite、React/Vite 和本地 Docker。支持多个项目，每次执行一个项目任务；首版游戏为单机离线浏览器躲避游戏。
 
-## 安装
+## 功能
 
-准备 Node.js 22.12+、uv、Git、curl、ffmpeg/ffprobe、openssl，以及 Chromium 所需系统库和中文字体。宿主检查配置见 [preflight-requirements.toml](scripts/preflight-requirements.toml)。离线运行器探针使用 Linux 用户/网络命名空间，需要可用的 `unshare`。
+- 生产流程：玩法调研、策划、美术、音频、游戏编码、关卡设计与编码、构建交付。
+- 经典视图与画布共用版本和审核状态；任务支持取消、检查点续跑与执行记录查看。
+- 运营流程：专家独立分析、讨论、改进提案、新游戏立项、实验预登记、后测与结算。
+- 人工试玩与脚本测评分开记录；知识条目经审核后参与后续任务。
+- 设计与运营角色使用方舟接口；两个编码角色通过 Claude Agent SDK 在本地容器执行。
 
-将源码解压到 Linux 文件系统目录（例如 `~/projects/game_developing_agent`），然后在该目录的 WSL/Linux 终端执行：
+## 安装与启动
 
-```bash
-bash scripts/setup.sh
-bash game_developing_agent --help
-bash scripts/verify-runtime.sh
+环境：Node.js 22.22+、npm、Docker（Linux 容器）。请确保当前账户具备所选模型的调用权限。
+
+```powershell
+npm ci
+Copy-Item .env.example .env
 ```
 
-Python 3.11 环境安装在 `game_developing_agent-mcp/.venv`，Claude Code 2.1.303 和 Playwright 1.64.1 安装在 `.tools`。`uv.lock` 固定 Python 依赖；游戏模板附带 npm 锁文件。安装需要联网下载依赖。`verify-runtime.sh` 通过本机模拟响应检查流式、回退、子任务计数和视觉路由，云 API 调用为零。
+首次安装后在 `.env` 填入 `ARK_AGENT_PLAN_API_KEY`。已有配置可直接沿用，模型名与执行参数通过环境变量调整。
 
-依赖目录可分别通过 `GAME_DEVELOPING_AGENT_LOCAL_TOOLS_DIR` 和 `GAME_DEVELOPING_AGENT_PYTHON_ENV` 设置。安装器和运行器应使用相同设置。Windows 命令入口：`scripts/game_developing_agent.ps1`，默认 WSL 发行版为 Ubuntu。
-
-## 本地示例
-
-```bash
-GAME="$(pwd)/playground/demo"
-bash game_developing_agent create --project "$GAME" --local-fixture '制作陨石躲避游戏'
-bash game_developing_agent preview --project "$GAME" --port 8080
-# 在另一个终端运行：
-bash game_developing_agent build --project "$GAME"
-bash game_developing_agent verify --project "$GAME" --profile development
+```powershell
+npx playwright install chromium
+npm run build
+npm run coder:build
+npm start
 ```
 
-示例由代码绘制资源，使用可复现的波次与 seed。运行时生成游戏源码和构建包，位置为游戏目录的 `delivery/`。`--local-fixture` 表示模板运行；云生成来源单独记录。本地验证会检查构建、九组关卡与浏览器行为；完整 development 验收还需 `--vision` 的真实视觉结果。
+工作台：http://127.0.0.1:8787 。游戏预览默认使用独立端口 8788。
 
-## 云任务配置
+Windows 后台启动与停止：
 
-1. 将 `.env.example` 复制为 `.env`，填写 `ARK_AGENT_PLAN_API_KEY`。
-2. 执行 `bash game_developing_agent doctor --project "$(pwd)"` 检查凭据、工具和运行器。
+```powershell
+./scripts/start-workbench.ps1
+./scripts/stop-workbench.ps1
+```
 
-| 用途 | 模型 |
+## 使用
+
+1. 新建项目，写明玩法、操作、难度和验收目标，启动“创意制作”。
+2. 依次检查调研参考、策划、美术和关卡方案；批准或填写修改意见。
+3. 在“游戏试玩”运行脚本测评并实际游玩，保存体验反馈，核对交付结果。
+4. “修改游戏”用于直接提出修改；“运营与实验”用于分析证据、审核提案、执行预登记实验并结算。
+5. “制作新游戏”分区用于形成候选立项方案，批准后创建独立项目；“记忆与知识”管理可复用经验。
+
+失败任务保留产物和阶段。查看错误详情后使用“继续任务”；模型结构化输出连续失败等情况可能需要调整提示或人工处理。
+
+## 开发与验证
+
+```powershell
+npm run typecheck
+npm test
+npm run build
+npm run test:browser
+npm run package:source
+```
+
+浏览器回归使用隔离合成数据，端口为 18807/18808。运行测试无需模型密钥。真实模型效果、游戏体验与恢复能力通过各项目实际任务验证。
+
+源码包输出到 `dist/releases/`，包含开发源码和已构建工作台。项目状态、生成游戏、会话与日志存入 `.local/`，凭据保存在 `.env`。这些本机内容由 Git 和源码打包排除。备份项目时保存完整本地数据目录，凭据独立保管。
+
+| 路径 | 用途 |
 | --- | --- |
-| 主控与开发角色 | `deepseek-v4.1-flash` |
-| 图片 | `doubao-seedream-5.0-pro` |
-| 动画 | `doubao-seedance-2.0-fast` |
-| 独立视觉验证 | `doubao-seed-2.1-pro` |
+| `src/production.ts`、`src/operations.ts` | 生产与运营流程 |
+| `src/coder*.ts` | 编码容器、SDK 会话和执行恢复 |
+| `src/evaluation.ts`、`src/browser-evaluation.ts` | 测评、实验预登记和结算 |
+| `src/memory.ts`、`src/reporting.ts` | 上下文、知识治理和通用用量记录 |
+| `src/server.ts`、`ui/` | 本地 API 与工作台 |
+| `templates/`、`prompts/` | 游戏模板、角色提示和执行合同 |
+| `tests/`、`scripts/` | 回归、启动和打包 |
 
-四个模型共用方舟 Agent Plan 密钥，具体模型按任务类型路由。
+当前版本采用手动触发运营分析与结算；跨项目批次调度、素材依赖并行和自动恢复仍有后续开发空间。旧版 Python/MCP 实现保留在仓库历史；当前安装流程以本 README 为准。
 
-```bash
-GAME="$(pwd)/playground/my-game"
-bash game_developing_agent create --project "$GAME" '制作俯视角陨石躲避游戏'
-bash game_developing_agent change --project "$GAME" '增大生命数字并降低普通难度速度'
-bash game_developing_agent resume --project "$GAME" --inspect
-bash game_developing_agent resume --project "$GAME"
-# 制作已完成时，直接交接外层验证：
-bash game_developing_agent resume --project "$GAME" --verify-only --vision
-bash game_developing_agent review --project "$GAME"
-```
+## 授权与来源
 
-## 请求计数与恢复
-
-每次管线启动记录实际文本 HTTP 请求，主控、子任务及自动回退共用计数。通用用量记录包含模型、请求次数、返回的 token 用量和媒体任务 ID，使用 `bash game_developing_agent usage --project "$(pwd)"` 查看。请求上限由运行器配置的可选 `maximum_requests` 设置；默认持续记录请求。
-
-达到本地请求上限时，返回 `http_request_limit`，保存原请求、会话和下一步命令。`resume` 续跑当前会话并创建本次运行记录。`resume --verify-only` 直接执行真实验证；验证成功会同步恢复记录。已完成且证据仍匹配当前源码的项目通过本地结果返回。
-
-## 当前边界
-
-- 一个活动游戏、一个代码 writer；开发角色串行交接。支持本地试玩与离线复盘。
-- 游戏浏览器预览已提供；用于提交自然语言任务、查看进度、用量和提案的 Web 管理界面处于后续开发范围。
-- `development_ready` 表示开发验收结果；完整发行门禁由 `ready_to_ship` 表示。状态按实际证据保存。
-- Seedance 保存提交检查点与任务 ID，已受理任务按原 ID 恢复；提交结果未知时保留现场供检查。
-- 动画视觉检查保存原始抽帧、时间戳、哈希及 JSON 观察报告；结论范围为已观察的采样帧，运行时播放由浏览器检查。
-
-## 开发与打包
-
-```bash
-bash scripts/setup.sh --dev
-bash scripts/check.sh
-python3 scripts/package.py --output dist
-```
-
-发布源码 ZIP 由当前 Git 跟踪文件生成，旁边附 SHA-256 校验文件。运行数据、凭据、依赖目录和媒体文件保存在本地。Python wheel 是 MCP 组件，完整命令工作流请使用源码发行包。
-
-许可证：Apache-2.0；第三方组件声明及改动归属见 [LICENSE](LICENSE) 和 [NOTICE](NOTICE)。
+沿用本仓库 Apache-2.0 授权，必要上游声明见 `LICENSE` 与 `NOTICE`。当前工作台实现参考公开文章《AI 自迭代的小游戏 Agent：2周上线6款小游戏，3天迭代12款小游戏》中描述的生产、专业角色协作和实验结算机制；文章内容版权归原作者。第三方依赖各自遵循其许可证，源码打包附带前端运行组件声明。

@@ -1,16 +1,19 @@
-game_developing_agent 0.1.0rc1
+game_developing_agent
+Copyright (c) 2026 game_developing_agent Contributors.
+Licensed under the Apache License, Version 2.0.
 
-This product includes modified components from
+The current TypeScript workbench is an independently implemented development
+version replacing the earlier Python/MCP application. It retains this
+repository's Apache-2.0 licensing and historical upstream notices.
+
+Historical source attribution:
 Game-Creation-Agents, Copyright (C) 2026 Tencent. All rights reserved.
-Source: https://github.com/Tencent/Game-Creation-Agents
+https://github.com/Tencent/Game-Creation-Agents
 Upstream revision: ac0f18b9e3a362f4171e2b7d48c3337a0bdcf824
 License: Apache-2.0.
+Phaser Skills: Copyright (c) 2026 Richard Davey, Phaser Studio Inc.
+https://github.com/phaserjs/phaser/tree/master/skills
+License: MIT; the original text remains in LICENSE.
 
-Changes include the CLI, Agent Plan integration, request accounting, recovery,
-dodge template, telemetry, development verification, packaging and naming.
-Comment-capable files carry a modification notice; structured data carries
-a companion .license notice. Original attribution remains in LICENSE.
-
-Bundled Phaser Skills: Copyright (c) 2026 Richard Davey, Phaser Studio Inc.
-Source: https://github.com/phaserjs/phaser/tree/master/skills
-License: MIT; the text is included in LICENSE.
+Current third-party dependencies retain their own licenses. Source archives
+include THIRD_PARTY_NOTICES.txt for bundled React runtime components.

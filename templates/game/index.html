@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>本地游戏</title>
+    <link rel="stylesheet" href="shell.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <small>LOCAL PLAY / 本地试玩</small>
+          <h1 id="title">加载游戏</h1>
+        </div>
+        <a href="blueprint.html">关卡蓝图 ↗</a>
+      </header>
+      <section class="toolbar">
+        <label
+          >难度
+          <select id="difficulty">
+            <option value="easy">轻松</option>
+            <option value="normal" selected>标准</option>
+            <option value="hard">挑战</option>
+          </select></label
+        ><label>Seed <input id="seed" type="number" value="1024" /></label
+        ><button id="start">开始 / Enter</button><button id="pause">暂停 / P</button
+        ><button id="restart">重开 / R</button><button id="mute">声音：开</button>
+      </section>
+      <div class="stage">
+        <canvas id="game" width="960" height="600" tabindex="0" aria-label="游戏画面"></canvas>
+        <div id="status" role="status">准备开始</div>
+      </div>
+      <footer><span>WASD / 方向键移动 · P 暂停 · R 重开</span><span id="score">等待开始</span></footer>
+      <div class="touch">
+        <button data-key="ArrowLeft">←</button><button data-key="ArrowUp">↑</button
+        ><button data-key="ArrowDown">↓</button><button data-key="ArrowRight">→</button>
+      </div>
+      <p id="error" role="alert"></p>
+    </main>
+    <script>
+      function showLoadError(message) {
+        document.getElementById('error').textContent = '加载或运行失败：' + message;
+      }
+      window.addEventListener('error', (e) => showLoadError(e.message || '资源加载失败'), true);
+      window.addEventListener('unhandledrejection', (e) => showLoadError(String(e.reason)));
+    </script>
+    <script type="module" src="shell.mjs"></script>
+  </body>
+</html>
