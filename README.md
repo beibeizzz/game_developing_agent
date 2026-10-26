@@ -2,7 +2,7 @@
 
 本地游戏开发工作台。通过专业 Agent 协作，将创意推进到方案审核、素材制作、代码生成、游戏试玩和迭代测评。
 
-当前为开发版：TypeScript、LangGraph、SQLite、React/Vite 和本地 Docker。支持多个项目，每次执行一个项目任务；首版游戏为单机离线浏览器躲避游戏。
+TypeScript、LangGraph、SQLite、React/Vite 和本地 Docker。支持多个项目，每次执行一个项目任务；首版游戏为单机离线浏览器躲避游戏。
 
 ## 功能
 
@@ -73,7 +73,6 @@ npm run package:source
 | `templates/`、`prompts/` | 游戏模板、角色提示和执行合同 |
 | `tests/`、`scripts/` | 回归、启动和打包 |
 
-当前版本采用手动触发运营分析与结算；跨项目批次调度、素材依赖并行和自动恢复仍有后续开发空间。旧版 Python/MCP 实现保留在仓库历史；当前安装流程以本 README 为准。
 
 ## 授权与来源
 
